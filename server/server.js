@@ -24,15 +24,16 @@ app.get('/', cors(), function (req, res) {
     var user_id = req.query.user_id;
     var image_url = 'http://graph.facebook.com/' + user_id + '/picture?width=600&height=600';
     download(image_url, IMAGES_PATH + 'users/' + user_id + '.jpeg', function () {
-        console.log('done writing image');
         var ad_id=1;
         var options = {
             scriptPath: 'faceswapper/',
             args: ['../' + IMAGES_PATH + 'users/' + user_id + '.jpeg','../'+IMAGES_PATH + 'ads/' + ad_id + '.jpeg']
         };
         PythonShell.run('faceswapper.py',options, function (err) {
-            if (err) throw err;
-            console.log('finished');
+            if (err) {
+                console.log(err);
+                res.json({err: err});
+            }
             res.end('http://' + req.get('host') + '/ads/' + user_id + '_' + ad_id + '.jpeg');
         });
     })

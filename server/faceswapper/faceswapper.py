@@ -42,7 +42,9 @@ import numpy
 import sys
 import os
 
-PREDICTOR_PATH = "./shape_predictor_68_face_landmarks.dat"
+OWN_PATH = os.path.dirname(os.path.realpath(__file__)) + '/'
+
+PREDICTOR_PATH = OWN_PATH + "shape_predictor_68_face_landmarks.dat"
 SCALE_FACTOR = 1 
 FEATHER_AMOUNT = 11
 
@@ -189,10 +191,8 @@ def correct_colours(im1, im2, landmarks1):
     return (im2.astype(numpy.float64) * im1_blur.astype(numpy.float64) /
                                                 im2_blur.astype(numpy.float64))
 
-ownPath = os.path.dirname(os.path.realpath(__file__)) + '/'
-
-im1, landmarks1 = read_im_and_landmarks(ownPath + sys.argv[2])
-im2, landmarks2 = read_im_and_landmarks(ownPath + sys.argv[1])
+im1, landmarks1 = read_im_and_landmarks(OWN_PATH + sys.argv[2])
+im2, landmarks2 = read_im_and_landmarks(OWN_PATH + sys.argv[1])
 
 M = transformation_from_points(landmarks1[ALIGN_POINTS],
                                landmarks2[ALIGN_POINTS])
@@ -210,4 +210,4 @@ output_im = im1 * (1.0 - combined_mask) + warped_corrected_im2 * combined_mask
 user_filename = sys.argv[1].split("/")[-1].split(".")[0]
 ad_filename = sys.argv[2].split("/")[-1].split(".")[0]
 
-cv2.imwrite(ownPath + '../resources/images/personalized_ads/' + user_filename + '_' + ad_filename + '.jpg', output_im)
+cv2.imwrite(OWN_PATH + '../resources/images/personalized_ads/' + user_filename + '_' + ad_filename + '.jpeg', output_im)

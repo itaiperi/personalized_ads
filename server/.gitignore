@@ -1,4 +1,5 @@
-resources/users
-resources/personalized_ads
+resources/images/users
+resources/images/personalized_ads
 node_modules
 .idea
+*.log
