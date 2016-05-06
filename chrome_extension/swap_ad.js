@@ -1,29 +1,31 @@
-function swap() {
+function swap(new_ad_url) {
 	//var swapped_ad = document.getElementById('ads.ozen.right');
 	var swapped_ad = $('#ads.ozen.right');
     if (swapped_ad) {
-		alert('good');
-		//Creating Elements
-		//document.getElementById('ads.ozen.right').innerHTML = "YOLO"
-		//$("<p />", { text: "YOLO BLAT WE WIN" }).insertBefore('#ads.ozen.right');
-		//$('<img src="http://i.telegraph.co.uk/multimedia/archive/03589/Wellcome_Image_Awa_3589699k.jpg"/>').insertAfter("div.block.B2b :first");
+//		alert('good');
 		$("#ads.ozen.right").hide();
-		$('body').append('<img src="http://cdn.static-economist.com/sites/default/files/images/articles/migrated/20101211_tqp001_0.jpg" style="position:fixed;top:0;right:0;" />');
-//		alert('added');
-//		var btn = document.createElement("BUTTON");
-//		var t = document.createTextNode("CLICK ME");
-//		btn.appendChild(t);
-		//Appending to DOM 
-//		document.body.appendChild(btn);
+		$('body').append('<img src="' + new_ad_url + '" style="position:fixed;top:0;right:0;" />');
 	} else {
-		alert('bad');
-		setTimeout(swap, 1000);
+//		alert('bad');
+		setTimeout(function() {swap(new_ad_url)}, 500);
 	}
 }
 
-document.addEventListener("DOMContentLoaded", function(e) {
-	//Somehow everything runs faster with it.
-	//e.stopPropagation();
-}, true);
-
-setTimeout(swap, 1000);
+$.ajax({
+    type: 'GET',
+    //url: 'http://localhost:8081/get_ad',
+    url: 'http://localhost:8081/',
+    //user_id : '123234',
+    crossDomain: true,
+    
+    success: function (response) {
+        alert('good');
+        new_ad_url = 'http://cdn.static-economist.com/sites/default/files/images/articles/migrated/20101211_tqp001_0.jpg';
+        swap(new_ad_url);
+    },
+    
+    error: function (xhr,status,error) {
+    	alert('bad');
+    	console.log(xhr,status,error);
+    }
+});
