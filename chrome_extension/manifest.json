@@ -1,0 +1,15 @@
+{
+  "name": "jQuery DOM",
+  "manifest_version": 2,
+  "version":"1.0",
+  "description": "Manipulate the DOM when the page is done loading",
+  "browser_action": {
+    "name": "Manipulate DOM",
+    "icons": ["icon.png"],
+    "default_icon": "icon.png"
+  },
+  "content_scripts": [ {
+    "js": [ "jquery-2.2.3.min.js", "swap_ad.js" ],
+    "matches": [ "http://www.ynet.co.il/*", "https://www.ynet.co.il/*"]
+  }]
+}
