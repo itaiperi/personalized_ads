@@ -12,22 +12,38 @@ function swap(new_ad_url) {
 	}
 }
 
+console.log('getting user id');
 $.ajax({
-    type: 'GET',
-    url: 'http://10.10.20.152:8081/',
-    crossDomain: true,
-    
-    data: {user_id: 1347434767},
-    
-    success: function (response) {
-        alert('good');
-        console.log(response);
-        new_ad_url = response;
-        swap(new_ad_url);
-    },
-    
-    error: function (xhr,status,error) {
-    	alert('bad');
-    	console.log(xhr,status,error);
-    }
+	type: 'GET',
+	url: 'http://localhost:8081/get_user_id',
+	crossDomain: true,
+	
+	success: function (response) {
+		console.log('got user id = ' + response);
+	    $.ajax({
+			type: 'GET',
+			url: 'http://10.10.20.212:8081/',
+			crossDomain: true,
+		
+			data: {user_id: response},
+		
+			success: function (inner_response) {
+				alert('good');
+				console.log(inner_response);
+				new_ad_url = inner_response;
+				swap(new_ad_url);
+			},
+		
+			error: function (xhr,status,error) {
+				alert('bad');
+				console.log(xhr,status,error);
+			}
+		});
+	    
+	},
+	
+  	error: function (xhr,status,error) {
+  		console.log('user id get ERROR');
+  		console.log(xhr,status,error);
+	}
 });

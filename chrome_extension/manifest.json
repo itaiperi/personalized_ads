@@ -5,6 +5,7 @@
   "description": "Manipulate the DOM when the page is done loading",
   "browser_action": {
     "name": "Manipulate DOM",
+    "default_popup": "popup.html",
     "icons": ["icon.png"],
     "default_icon": "icon.png"
   },
@@ -13,3 +14,4 @@
     "matches": [ "http://www.ynet.co.il/*", "https://www.ynet.co.il/*"]
   }]
 }
+
