@@ -19,25 +19,60 @@ var download = function(uri, filename, callback){
     });
 };
 
-//This responds a POST request for the homepage
+var choose_ad = function (user_id) {
+    return 'ad_7';
+}
+
+var swap = function(user_path, ad_path) {
+    var options = {
+        scriptPath: 'faceswapper/',
+        args: [user_path, ad_path]
+    };
+    PythonShell.run('faceswapper.py',options, function (err) {
+        if (err) {
+            console.log(err);
+            ad_response(err);
+        } else {
+            ad_response();
+        }
+    });
+}
+
+//This responds a GET request for the homepage
 app.get('/', cors(), function (req, res) {
+    ad_response = function ad_response(err) {
+        if (err) {
+            console.log(err);
+            res.json({err: err});
+        } else {
+            res.send('http://' + req.get('host') + '/ads/' + user_id + '_' + ad_id + '.jpg');
+        }
+    }
+
     var user_id = req.query.user_id;
-    var image_url = 'http://graph.facebook.com/' + user_id + '/picture?width=600&height=600';
-    download(image_url, IMAGES_PATH + 'users/' + user_id + '.jpeg', function () {
-        console.log('done writing image');
-        var ad_id=1;
-        var options = {
-            scriptPath: 'faceswapper/',
-            args: ['../' + IMAGES_PATH + 'users/' + user_id + '.jpeg','../'+IMAGES_PATH + 'ads/' + ad_id + '.jpeg']
-        };
-        PythonShell.run('faceswapper.py',options, function (err) {
-            if (err) throw err;
-            console.log('finished');
-            res.end('http://' + req.get('host') + '/ads/' + user_id + '_' + ad_id + '.jpeg');
+    if (!user_id) {
+        res.json({err: 'No user id passed'});
+        return;
+    }
+    // console.log("TEST");
+    var ad_id = choose_ad(user_id);
+    if (!fs.existsSync('./resources/images/users/' + user_id + '.jpg')) {
+        var image_url = 'http://graph.facebook.com/' + user_id + '/picture?width=600&height=600';
+        download(image_url, IMAGES_PATH + 'users/' + user_id + '.jpg', function (err) {
+            if (err) {
+                // TODO handle download error
+            }
+            swap('../resources/images/users/' + user_id + '.jpg', '../resources/images/ads/' + ad_id + '.jpg');
         });
-    })
+    } else if (!fs.existsSync('./resources/images/personalized_ads/' + user_id + '_' + ad_id + '.jpg')) {
+        swap('../resources/images/users/' + user_id + '.jpg', '../resources/images/ads/' + ad_id + '.jpg');
+    } else {
+        ad_response();
+    }
+
 });
 
-    var server = app.listen(8081, function () {
-        console.log("Server started");
-    });
+
+var server = app.listen(8081, function () {
+    console.log("Server started");
+});
