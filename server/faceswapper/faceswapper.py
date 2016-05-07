@@ -210,4 +210,4 @@ output_im = im1 * (1.0 - combined_mask) + warped_corrected_im2 * combined_mask
 user_filename = sys.argv[1].split("/")[-1].split(".")[0]
 ad_filename = sys.argv[2].split("/")[-1].split(".")[0]
 
-cv2.imwrite(OWN_PATH + '../resources/images/personalized_ads/' + user_filename + '_' + ad_filename + '.jpeg', output_im)
+cv2.imwrite(OWN_PATH + '../resources/images/personalized_ads/' + user_filename + '_' + ad_filename + '.jpg', output_im)
