@@ -1,13 +1,13 @@
+// console.log($('#ads.ozen.right'));
 function swap(new_ad_url) {
-	//var swapped_ad = document.getElementById('ads.ozen.right');
-	var swapped_ad = $('#ads.ozen.right');
+	var swapped_ad = document.getElementById('ads.ozen.right');
+    document.getElementById('ads.ozen.right').style.display = 'none';
     if (swapped_ad) {
-		alert('good1');
-		$("#ads.ozen.right").hide();
-		$('body').append('<img src="' + new_ad_url + '" style="position:fixed;top:0;right:0;" />');
-		//$('body').append('<img src="http://10.10.20.152:8081/ads/1347434767_1.jpeg" style="position:fixed;top:0;right:0;" />');
+        // alert('good1');
+        document.getElementById('ads.ozen.right').style.display = 'none';
+		$('body').append('<img src="' + new_ad_url + '" style="position:absolute;left:90px;top:100px;max-width:325px" />');
 	} else {
-		alert('bad1');
+		// alert('bad1');
 		setTimeout(function() {swap(new_ad_url)}, 500);
 	}
 }
@@ -22,13 +22,12 @@ $.ajax({
 		console.log('got user id = ' + response);
 	    $.ajax({
 			type: 'GET',
-			url: 'http://10.10.20.212:8081/',
+			url: 'http://localhost:8081/get_ad',
 			crossDomain: true,
 		
 			data: {user_id: response},
 		
 			success: function (inner_response) {
-				alert('good');
 				console.log(inner_response);
 				new_ad_url = inner_response;
 				swap(new_ad_url);

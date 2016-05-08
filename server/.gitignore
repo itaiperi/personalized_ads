@@ -3,3 +3,4 @@ resources/images/personalized_ads
 node_modules
 .idea
 *.log
+*~

@@ -1,9 +1,0 @@
-function set_user_id(details) {
-	chrome.cookies.set(details, function(cookie) {
-		console.log('cookie is set');
-		chrome.cookies.get({url:details.url, name:details.name}, function (cookie) {
-			console.log('cookie received');
-			console.log(cookie);
-		});
-	});
-}
